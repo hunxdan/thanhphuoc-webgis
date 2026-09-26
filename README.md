@@ -241,3 +241,45 @@ rộng so với bản nháp để cân đối với phần nội dung.
    nav vô tình bị to gần bằng nút CTA lớn ở hero. Đã thu nhỏ lại rõ rệt
    (44px cao, padding 20px, chữ 14px, bóng đổ nhẹ hơn) để phân biệt hẳn
    với nút CTA lớn "Mở Bản Đồ Tra Cứu".
+
+## 13. Đưa lên GitHub
+
+Project đã được `git init` sẵn (nhánh `main`, có commit đầu tiên) và
+kèm `.gitignore` + `.gitattributes`. Sau khi giải nén, chỉ cần:
+
+```bash
+cd webgis-thanh-phuoc
+git remote add origin https://github.com/<tên-tài-khoản>/<tên-repo>.git
+git push -u origin main
+```
+
+Nếu muốn host luôn bằng **GitHub Pages**: vào Settings → Pages của repo,
+chọn nhánh `main`, thư mục `/ (root)`. Trang chính sẽ ở
+`https://<tên-tài-khoản>.github.io/<tên-repo>/` (mở `index.html` — bản
+đồ tra cứu) và `.../landing.html` cho trang giới thiệu.
+
+### Về thư mục `fonts/`
+
+**Không bắt buộc.** Nếu để trống (chỉ có `fonts/README.txt`), site vẫn
+chạy bình thường — CSS có khai báo `local("Raleway")`/`local("Inter")`
+và font hệ thống dự phòng (Segoe UI/Helvetica/Arial), nhờ
+`font-display: swap` nên không lỗi, không màn hình trắng chờ font.
+Đây là lựa chọn tự host thay vì gọi Google Fonts CDN, đúng theo yêu cầu
+bảo mật/không phụ thuộc bên thứ ba khi tải trang.
+
+Nếu muốn đúng 100% font thiết kế trên Figma, tải 2 file:
+- `Raleway` (Variable Font, giấy phép SIL OFL) tại
+  fonts.google.com/specimen/Raleway → mục "Get font" → chọn bản
+  Variable/vf → xuất ra `.woff2` — đặt tên đúng
+  `fonts/Raleway-Variable.woff2`.
+- `Inter` (Variable Font) tại fonts.google.com/specimen/Inter → tương
+  tự — đặt tên đúng `fonts/Inter-Variable.woff2`.
+
+Google Fonts trên web thường cho tải `.ttf`; nếu chỉ có `.ttf`, có thể
+đổi tên trực tiếp thành `.woff2` **không** hoạt động (khác định dạng
+nén) — cần convert thật sự (ví dụ trang `cloudconvert.com` hoặc lệnh
+`fonttools varLib.instancer`/`woff2_compress`). Cách nhanh nhất: dùng
+google-webfonts-helper (gwfh.mranftl.com) hoặc trang
+fontsource.org, chọn Raleway/Inter, tải sẵn bản `.woff2`. Sau khi có 2
+file, bỏ vào đúng thư mục `fonts/` với đúng tên ở trên rồi commit —
+không cần sửa gì thêm trong CSS.
