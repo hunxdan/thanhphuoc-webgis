@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Bảo mật: CSP chặt. Chỉ cho phép tài nguyên cùng nguồn + ô ảnh vệ tinh Esri. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://server.arcgisonline.com; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#99c54a">
+  <title>WebGIS Thạnh Phước – Tra cứu quy hoạch thửa đất</title>
+  <meta name="description" content="Hệ thống tra cứu thông tin đất đai và quy hoạch xã Thạnh Phước – sản phẩm học tập, nghiên cứu.">
+  <link rel="icon" type="image/png" href="images/Favion2.png">
+  <link rel="apple-touch-icon" href="images/Favion2.png">
+  <link rel="stylesheet" href="css/leaflet.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="page-map panel-open">
+
+  <div id="map" role="application" aria-label="Bản đồ WebGIS xã Thạnh Phước" tabindex="-1"></div>
+
+  <!-- Màn hình chờ tải dữ liệu -->
+  <div id="loader" class="loader" role="status" aria-live="polite">
+    <img class="loader__logo" src="images/Favion2.png" alt="" width="96" height="112">
+    <p class="loader__text" id="loaderText">Đang tải dữ liệu bản đồ…</p>
+    <div class="loader__bar"><span id="loaderBar"></span></div>
+  </div>
+
+  <!-- Nút mở thanh tra cứu (hiện khi panel thu gọn) -->
+  <button id="btnOpenSearch" class="tool tool--search" type="button" aria-label="Mở tra cứu thửa đất" aria-controls="searchPanel" data-tip="Tra cứu">
+    <img src="images/SearchIcon.svg" alt="" width="40" height="40">
+  </button>
+
+  <!-- ===== Panel tra cứu ===== -->
+  <div class="panel-wrap" id="searchWrap">
+    <aside id="searchPanel" class="panel panel--search" aria-label="Tra cứu thửa đất">
+      <div class="panel__inner">
+        <div class="tabs" role="tablist" aria-label="Kiểu tra cứu" data-active="0">
+          <span class="tabs__thumb" aria-hidden="true"></span>
+          <button class="tabs__tab is-active" role="tab" type="button" id="tabThua" aria-selected="true" data-mode="thua">Số tờ/thửa</button>
+          <button class="tabs__tab" role="tab" type="button" id="tabChu" aria-selected="false" data-mode="chu">Chủ sử dụng</button>
+          <button class="tabs__tab" role="tab" type="button" id="tabXy" aria-selected="false" data-mode="xy">Tọa độ</button>
+        </div>
+
+        <div class="searchbox">
+          <img src="images/SearchIcon.svg" alt="" width="22" height="22">
+          <span class="searchbox__sep" aria-hidden="true"></span>
+          <input id="q" type="search" inputmode="search" autocomplete="off" spellcheck="false" maxlength="80"
+                 placeholder="Nhập số tờ_số thửa" aria-label="Ô tìm kiếm">
+        </div>
+
+        <div class="panel__scroll" id="panelBody" aria-live="polite">
+          <!-- Trạng thái trống -->
+          <div class="empty" id="emptyState">
+            <h2 class="empty__title">Chưa chọn thửa đất</h2>
+            <p class="empty__text">Nhập thông tin vào ô tìm kiếm<br>hoặc chọn trực tiếp vào một thửa trên bản đồ.</p>
+          </div>
+
+          <!-- Danh sách gợi ý -->
+          <div id="results" hidden>
+            <h2 class="sec-title sec-title--sm" id="resultsTitle">Kết quả</h2>
+            <ul class="results" id="resultsList"></ul>
+          </div>
+
+          <!-- Thông tin thửa -->
+          <div id="info" hidden>
+            <h2 class="sec-title">Thông tin thửa đất</h2>
+            <img class="divider" src="images/thanhtachnoidung.svg" alt="" width="378" height="1">
+
+            <section class="block" aria-labelledby="hThua">
+              <h3 class="block__title" id="hThua">Thửa đất</h3>
+              <dl class="dl">
+                <div><dt>Số tờ</dt><dd id="iTo" class="num"></dd></div>
+                <div><dt>Số thửa</dt><dd id="iThua" class="num"></dd></div>
+                <div><dt>Mã thửa</dt><dd id="iMa" class="num"></dd></div>
+                <div><dt>Diện tích</dt><dd id="iDt" class="num"></dd></div>
+                <div><dt>Diện tích pháp lý</dt><dd id="iDtpl" class="num"></dd></div>
+                <div><dt>Hiện trạng</dt><dd id="iHt"></dd></div>
+                <div><dt>Chủ sử dụng</dt><dd id="iChu"></dd></div>
+                <div><dt>Địa chỉ</dt><dd id="iDc"></dd></div>
+              </dl>
+            </section>
+
+            <img class="divider" src="images/thanhtachnoidung.svg" alt="" width="378" height="1">
+
+            <section class="block" aria-labelledby="hTyle">
+              <h3 class="block__title" id="hTyle">Tỷ lệ quy hoạch</h3>
+              <div class="gauge" id="gauge" role="img" aria-label="Tỷ lệ diện tích thửa nằm trong quy hoạch">
+                <svg class="gauge__svg" viewBox="0 0 92 92" width="92" height="92" aria-hidden="true">
+                  <circle class="gauge__track" cx="46" cy="46" r="38"></circle>
+                  <circle class="gauge__fill" id="gaugeFill" cx="46" cy="46" r="38"></circle>
+                </svg>
+                <span class="gauge__pct" id="gaugePct">0%</span>
+              </div>
+              <p class="gauge__text" id="gaugeText"></p>
+            </section>
+
+            <img class="divider" src="images/thanhtachnoidung.svg" alt="" width="378" height="1">
+
+            <section class="block" aria-labelledby="hCt">
+              <h3 class="block__title" id="hCt">Chi tiết quy hoạch</h3>
+              <ul class="qh-list" id="qhList"></ul>
+            </section>
+          </div>
+
+          <!-- Thông tin thửa quy hoạch (khi lớp quy hoạch bật và chọn trúng thửa quy hoạch) -->
+          <div id="qhinfo" hidden>
+            <h2 class="sec-title">Thông tin thửa quy hoạch</h2>
+            <img class="divider" src="images/thanhtachnoidung.svg" alt="" width="378" height="1">
+
+            <section class="block" aria-labelledby="hQh">
+              <h3 class="block__title" id="hQh">Thửa quy hoạch</h3>
+              <dl class="dl">
+                <div><dt>Tên</dt><dd id="qTen"></dd></div>
+                <div><dt>Mã quy hoạch</dt><dd id="qMa" class="num"></dd></div>
+                <div><dt>Thông tin thêm</dt><dd id="qTt"></dd></div>
+              </dl>
+            </section>
+          </div>
+        </div>
+
+        <div class="panel__actions">
+          <button class="btn-pill" type="button" id="btnCopy" disabled>
+            <img src="images/CopyIcon.svg" alt="" width="14" height="14">
+            <span>Sao chép thông tin</span>
+          </button>
+          <button class="btn-pill" type="button" id="btnRoute" disabled>
+            <img src="images/EntypodirectionIcon.svg" alt="" width="18" height="12">
+            <span>Chỉ đường</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Nút quay lại: nằm NGOÀI panel, góc trên bên phải -->
+    <button id="btnBack" class="back-btn" type="button" aria-label="Thu gọn thanh tra cứu" aria-controls="searchPanel">
+      <img src="images/BacktoIcon.svg" alt="" width="30" height="34">
+    </button>
+  </div>
+
+  <!-- ===== Bảng lớp bản đồ ===== -->
+  <section id="layerPanel" class="panel panel--pop" aria-label="Lớp bản đồ" hidden>
+    <h2 class="pop__title">Lớp bản đồ</h2>
+
+    <div class="layer-row" data-layer="thua">
+      <div class="layer-row__head">
+        <img class="layer-row__icon" src="images/ThuadatIcon.svg" alt="" width="40" height="23">
+        <span class="layer-row__name" id="lblThua">Thửa đất</span>
+        <button class="switch is-on" type="button" role="switch" aria-checked="true" aria-labelledby="lblThua" id="swThua">
+          <img class="switch__img switch__img--on" src="images/Button%20On.svg" alt="" width="107" height="34">
+          <img class="switch__img switch__img--off" src="images/Button%20Off.svg" alt="" width="99" height="26">
+        </button>
+      </div>
+      <div class="layer-row__opacity">
+        <label for="opThua">Độ trong suốt</label>
+        <output for="opThua" id="opThuaVal" class="num">100%</output>
+      </div>
+      <div class="slider" id="sliderThua" style="--v:1">
+        <span class="slider__fill" aria-hidden="true"></span>
+        <input class="slider__input" id="opThua" type="range" min="0" max="100" step="1" value="100">
+        <img class="slider__thumb" src="images/LayerControlPanel.svg" alt="" width="34" height="34">
+      </div>
+    </div>
+
+    <div class="layer-row" data-layer="qh">
+      <div class="layer-row__head">
+        <img class="layer-row__icon" src="images/QuyhoachIcon.svg" alt="" width="40" height="23">
+        <span class="layer-row__name" id="lblQh">Quy hoạch</span>
+        <button class="switch" type="button" role="switch" aria-checked="false" aria-labelledby="lblQh" id="swQh">
+          <img class="switch__img switch__img--on" src="images/Button%20On.svg" alt="" width="107" height="34">
+          <img class="switch__img switch__img--off" src="images/Button%20Off.svg" alt="" width="99" height="26">
+        </button>
+      </div>
+      <div class="layer-row__opacity">
+        <label for="opQh">Độ trong suốt</label>
+        <output for="opQh" id="opQhVal" class="num">70%</output>
+      </div>
+      <div class="slider" id="sliderQh" style="--v:0.7">
+        <span class="slider__fill" aria-hidden="true"></span>
+        <input class="slider__input" id="opQh" type="range" min="0" max="100" step="1" value="70">
+        <img class="slider__thumb" src="images/LayerControlPanel.svg" alt="" width="34" height="34">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Bảng nền bản đồ ===== -->
+  <section id="basemapPanel" class="panel panel--pop" aria-label="Nền bản đồ" hidden>
+    <h2 class="pop__title">Nền bản đồ</h2>
+    <div class="basemaps" role="radiogroup" aria-label="Chọn nền bản đồ">
+      <button class="basemap is-active" type="button" role="radio" aria-checked="true" data-base="satellite">
+        <span>Vệ tinh</span>
+        <img src="images/SatelliteOption%20IconArtwork%201.svg" alt="" width="34" height="34">
+      </button>
+      <button class="basemap" type="button" role="radio" aria-checked="false" data-base="light">
+        <span>Sáng</span>
+        <img src="images/LightOption%20IconArtwork%202.svg" alt="" width="40" height="40">
+      </button>
+      <button class="basemap" type="button" role="radio" aria-checked="false" data-base="dark">
+        <span>Tối</span>
+        <img src="images/DarkOption%20IconArtwork%202.svg" alt="" width="32" height="32">
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== Thanh công cụ bên phải ===== -->
+  <nav class="toolbar" aria-label="Công cụ bản đồ">
+    <button class="tool" id="btnLayers" type="button" aria-label="Lớp bản đồ" aria-expanded="false" aria-controls="layerPanel" data-tip="Lớp bản đồ">
+      <img src="images/LayerToggleIcon.svg" alt="" width="60" height="53">
+    </button>
+    <button class="tool" id="btnBasemap" type="button" aria-label="Nền bản đồ" aria-expanded="false" aria-controls="basemapPanel" data-tip="Nền bản đồ">
+      <img src="images/BasemapIcon.svg" alt="" width="52" height="52">
+    </button>
+    <button class="tool tool--locate" id="btnLocate" type="button" aria-label="Định vị vị trí của tôi" data-tip="Vị trí của tôi">
+      <img src="images/GeolocationIcon.svg" alt="" width="52" height="52">
+    </button>
+    <button class="tool tool--home" id="btnHome" type="button" aria-label="Toàn cảnh xã Thạnh Phước" data-tip="Toàn cảnh xã">
+      <img src="images/HomeExtentIcon.svg" alt="" width="52" height="52">
+    </button>
+    <button class="tool tool--ruler" id="btnMeasure" type="button" aria-label="Đo khoảng cách" aria-pressed="false" data-tip="Đo khoảng cách">
+      <img src="images/RulerIcon.svg" alt="" width="52" height="52">
+    </button>
+  </nav>
+
+  <!-- Zoom -->
+  <div class="zoom" role="group" aria-label="Phóng to / thu nhỏ">
+    <button class="zoom__btn" id="zoomIn" type="button" aria-label="Phóng to"><span class="zoom__icon zoom__icon--plus" aria-hidden="true"></span></button>
+    <button class="zoom__btn" id="zoomOut" type="button" aria-label="Thu nhỏ"><span class="zoom__icon" aria-hidden="true"></span></button>
+  </div>
+
+  <!-- Logo: bấm vào để sang landing page -->
+  <a class="brand" href="landing.html" aria-label="Về trang giới thiệu WebGIS Thạnh Phước">
+    <img src="images/LogoLandingpage.svg" alt="WebGIS Thạnh Phước" width="241" height="95">
+  </a>
+
+  <!-- Kết quả đo -->
+  <div class="measure-hud" id="measureHud" hidden>
+    <span class="measure-hud__label">Tổng chiều dài:</span>
+    <strong class="measure-hud__value num" id="measureValue">0 m</strong>
+    <button class="btn-pill btn-pill--sm" type="button" id="measureClear"><span>Xóa nét đo</span></button>
+  </div>
+
+  <div class="hover-tip" id="hoverTip" hidden></div>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <noscript><p class="noscript">Trang này cần bật JavaScript để hiển thị bản đồ.</p></noscript>
+
+  <script src="js/leaflet.js"></script>
+  <script src="js/colors.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

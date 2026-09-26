@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#d3fb8c">
+  <title>Giới thiệu – WebGIS Thạnh Phước</title>
+  <meta name="description" content="Hệ thống tra cứu thông tin quy hoạch xã Thạnh Phước – sản phẩm khóa luận tốt nghiệp, phục vụ nghiên cứu học thuật.">
+  <link rel="icon" type="image/png" href="images/Favion2.png">
+  <link rel="apple-touch-icon" href="images/Favion2.png">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <script src="js/landing.js" defer></script>
+</head>
+<body class="page-landing" id="top">
+
+  <!-- Định nghĩa mask (Four_star_Overlay / MapBase / MapOverlay dùng để mask vào khối) -->
+  <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <mask id="mkStar" maskUnits="userSpaceOnUse" x="0" y="0" width="148" height="155" style="mask-type:alpha">
+        <image href="images/Four_star_Overlay.svg" width="148" height="155"/>
+      </mask>
+      <mask id="mkMapBase" maskUnits="userSpaceOnUse" x="0" y="0" width="591" height="692" style="mask-type:alpha">
+        <image href="images/MapBase.svg" width="591" height="692"/>
+      </mask>
+      <mask id="mkMapOverlay" maskUnits="userSpaceOnUse" x="0" y="0" width="593" height="694" style="mask-type:alpha">
+        <image href="images/MapOverlay.svg" width="593" height="694"/>
+      </mask>
+      <linearGradient id="gdBase" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#b6e561"/>
+        <stop offset="0.55" stop-color="#d3fb8c" stop-opacity="0.75"/>
+        <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="gdLines" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#99c54a"/>
+        <stop offset="0.6" stop-color="#b6e561"/>
+        <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- ===== Navigation (thu hẹp chiều rộng) ===== -->
+  <header class="nav" id="nav">
+    <div class="nav__bar">
+      <a class="nav__logo" href="#top" aria-label="WebGIS Thạnh Phước – về đầu trang">
+        <img src="images/LogoLandingpage.svg" alt="WebGIS Thạnh Phước" width="241" height="95">
+      </a>
+      <nav class="nav__links" id="navLinks" aria-label="Điều hướng trang">
+        <a href="#about" data-nav="about">Về Website</a>
+        <a href="#features" data-nav="features">Chức năng</a>
+        <a href="#faq" data-nav="faq">Hỏi đáp</a>
+        <a class="cta cta--nav nav__cta-mobile" href="index.html">
+          <span class="cta__text">Vào WebGIS</span>
+        </a>
+      </nav>
+      <a class="cta cta--nav nav__cta" href="index.html">
+        <span class="cta__text">Vào WebGIS</span>
+      </a>
+      <button class="nav__toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Mở menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== Hero / Về Website ===== -->
+    <section class="hero" id="about" aria-labelledby="heroTitle">
+      <div class="container hero__grid">
+        <div class="hero__content">
+          <p class="eyebrow reveal">Về Website</p>
+          <h1 class="hero__title reveal" id="heroTitle" data-delay="80">Hệ thống Tra cứu <em class="hl-2">Thông tin</em> <em class="hl-3">Quy hoạch</em> xã Thạnh Phước</h1>
+          <p class="lead reveal" data-delay="160">Website được xây dựng như một phần của khóa luận tốt nghiệp (KLTN), nhằm mục đích nghiên cứu và thực hành công nghệ WebGIS. Toàn bộ thông tin hiển thị chỉ mang tính chất tham khảo, chưa qua thẩm định pháp lý và không có giá trị pháp lý chính thức.</p>
+          <p class="reveal" data-delay="220">
+            <a class="cta cta--lg" href="index.html">
+              <span class="cta__text">Mở Bản Đồ Tra Cứu <svg viewBox="0 0 24 16" aria-hidden="true"><path d="M1 8h21M16 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
+          </p>
+
+          <ul class="stats" aria-label="Số liệu nổi bật">
+            <li class="stat reveal" data-delay="0">
+              <svg class="stat__star" viewBox="0 0 148 155" aria-hidden="true" focusable="false"><rect width="148" height="155" fill="#fff" fill-opacity="0.5" mask="url(#mkStar)"/></svg>
+              <strong class="stat__num num" data-count="17821">17.821</strong>
+              <span class="stat__cap">Số thửa số hóa /100 tờ bản đồ</span>
+            </li>
+            <li class="stat reveal" data-delay="120">
+              <svg class="stat__star" viewBox="0 0 148 155" aria-hidden="true" focusable="false"><rect width="148" height="155" fill="#fff" fill-opacity="0.5" mask="url(#mkStar)"/></svg>
+              <strong class="stat__num num">2021 - 2030</strong>
+              <span class="stat__cap">Kỳ quy hoạch</span>
+            </li>
+            <li class="stat reveal" data-delay="240">
+              <svg class="stat__star" viewBox="0 0 148 155" aria-hidden="true" focusable="false"><rect width="148" height="155" fill="#fff" fill-opacity="0.5" mask="url(#mkStar)"/></svg>
+              <strong class="stat__num num">105°45’</strong>
+              <span class="stat__cap">Tọa độ chuẩn VN - 2000, kinh tuyến trục</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="hero__map" aria-hidden="true" id="heroMap">
+          <svg viewBox="0 0 593 694" preserveAspectRatio="xMidYMin meet" focusable="false">
+            <rect width="591" height="692" fill="url(#gdBase)" mask="url(#mkMapBase)"/>
+            <rect class="hero__lines" width="593" height="694" fill="url(#gdLines)" mask="url(#mkMapOverlay)"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Chức năng ===== -->
+    <section class="section features" id="features" aria-labelledby="featTitle">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow eyebrow--center">Chức năng</p>
+          <h2 class="h2" id="featTitle">Các công cụ của <em class="hl-2">WebGIS</em></h2>
+        </header>
+
+        <div class="feature-grid">
+          <article class="feature reveal" data-delay="0">
+            <div class="feature__icons">
+              <span class="icon-tile"><img src="images/LayerToggleIcon.svg" alt="" width="150" height="133"></span>
+            </div>
+            <h3>Chồng lớp &amp; độ trong suốt</h3>
+            <p>Bật/tắt độc lập lớp Thửa đất và Quy hoạch, chỉnh độ trong suốt của từng lớp để đối chiếu.</p>
+          </article>
+          <article class="feature reveal" data-delay="100">
+            <div class="feature__icons">
+              <span class="icon-tile"><img src="images/BasemapIcon.svg" alt="" width="112" height="112"></span>
+            </div>
+            <h3>3 nền bản đồ</h3>
+            <p>Ảnh vệ tinh, nền sáng hoặc nền tối — chuyển đổi nhanh theo nhu cầu quan sát.</p>
+          </article>
+          <article class="feature reveal" data-delay="0">
+            <div class="feature__icons">
+              <span class="icon-tile"><img src="images/GeolocationIcon.svg" alt="" width="104" height="104"></span>
+              <span class="icon-tile"><img class="spin" src="images/HomeExtentIcon.svg" alt="" width="93" height="93"></span>
+            </div>
+            <h3>Định vị &amp; điều hướng</h3>
+            <p>Xem vị trí hiện tại (GPS), quay về toàn cảnh xã, phóng to/thu thu nhỏ bản đồ mượt mà.</p>
+          </article>
+          <article class="feature reveal" data-delay="100">
+            <div class="feature__icons">
+              <span class="icon-tile"><img src="images/RulerIcon.svg" alt="" width="113" height="113"></span>
+            </div>
+            <h3>Đo đạc</h3>
+            <p>Đo khoảng cách trực tiếp trên bản đồ, đơn vị m/km, xem kết quả tức thời.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Đối tác (loop logo brand) ===== -->
+    <section class="section partners" id="partners" aria-labelledby="partnersTitle">
+      <h2 class="h3 reveal" id="partnersTitle"><em class="hl-1">Đối tác</em> của chúng tôi</h2>
+      <div class="marquee reveal" id="marquee" data-delay="100" aria-label="Logo các đối tác">
+        <div class="marquee__track" id="marqueeTrack">
+          <ul class="marquee__group" id="marqueeGroup">
+            <li class="marquee__item"><img class="brand b3" src="images/Brand3.svg" alt="HUN (nền đỏ)" width="131" height="48"></li>
+            <li class="marquee__item"><img class="brand b2" src="images/Brand2.svg" alt="Như Ý" width="62" height="64"></li>
+            <li class="marquee__item"><img class="brand b4" src="images/Brand4.svg" alt="Mạnh" width="94" height="62"></li>
+            <li class="marquee__item"><img class="brand b1" src="images/Brand1.svg" alt="HUN" width="95" height="31"></li>
+            <li class="marquee__item"><img class="brand b5" src="images/Brand5.svg" alt="Như Ý SEO" width="69" height="66"></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Lời cảm ơn (tách riêng khỏi Đối tác) ===== -->
+    <section class="section thanks" id="thanks" aria-labelledby="thanksTitle">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow eyebrow--center">Ghi nhận</p>
+          <h2 class="h3" id="thanksTitle"><em class="hl-3">Lời cảm ơn</em></h2>
+          <p class="thanks__intro">Nhóm thực hiện xin chân thành cảm ơn sự đồng hành, hướng dẫn và hỗ trợ dữ liệu từ các đơn vị và cá nhân dưới đây.</p>
+        </header>
+        <div class="thanks__grid">
+          <article class="thanks__card reveal" data-delay="0">
+            <div class="thanks__logo"><img src="images/Logo%20iuh.png" alt="Logo Trường Đại học Công nghiệp TP. Hồ Chí Minh" width="1028" height="293"></div>
+            <p class="thanks__role">Trường</p>
+            <h3>Đại học Công nghiệp TP. Hồ Chí Minh</h3>
+          </article>
+          <article class="thanks__card reveal" data-delay="100">
+            <div class="thanks__logo"><img src="images/Logo%20vien.png" alt="Logo Viện Khoa học Công nghệ và Quản lý môi trường" width="434" height="575"></div>
+            <p class="thanks__role">Khoa / Viện</p>
+            <h3>Viện Khoa học Công nghệ và Quản lý môi trường</h3>
+          </article>
+          <article class="thanks__card thanks__card--text reveal" data-delay="200">
+            <div class="thanks__badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4.5 20c0-3.6 3.4-6.5 7.5-6.5s7.5 2.9 7.5 6.5"/></svg>
+            </div>
+            <p class="thanks__role">Giảng viên hướng dẫn</p>
+            <h3>TS. Bùi Đăng Hưng</h3>
+          </article>
+          <article class="thanks__card thanks__card--text reveal" data-delay="300">
+            <div class="thanks__badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V9.5l8-5 8 5V21"/><path d="M9 21v-6h6v6"/><path d="M2.5 21h19"/></svg>
+            </div>
+            <p class="thanks__role">Cơ quan hỗ trợ dữ liệu</p>
+            <h3>Văn phòng Đăng ký đất đai</h3>
+            <p class="thanks__sub">Văn phòng ĐKĐĐ – UBND xã Thạnh Phước</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="section faq" id="faq" aria-labelledby="faqTitle">
+      <div class="container container--faq">
+        <header class="reveal">
+          <p class="eyebrow">Câu hỏi thường gặp</p>
+          <h2 class="h1" id="faqTitle">FAQ</h2>
+        </header>
+
+        <div class="faq__list">
+          <div class="faq__item is-open reveal" data-delay="0">
+            <h3><button class="faq__q" type="button" aria-expanded="true" aria-controls="ans1" id="q1"><span>Làm sao để tìm một thửa đất cụ thể?</span><img class="faq__icon" src="images/SpecialStar.svg" alt="" width="59" height="57"></button></h3>
+            <div class="faq__a" id="ans1" role="region" aria-labelledby="q1"><div><p>Chọn kiểu tra cứu ở thanh bên trái (số tờ/thửa, chủ sử dụng, hoặc tọa độ VN-2000) rồi nhập từ khóa. Danh sách gợi ý hiện ra ngay khi bạn gõ; chọn kết quả để bản đồ tự động lướt đến đúng thửa và mở bảng thông tin.</p></div></div>
+          </div>
+          <div class="faq__item reveal" data-delay="80">
+            <h3><button class="faq__q" type="button" aria-expanded="false" aria-controls="ans2" id="q2"><span>Thông tin trên trang có giá trị pháp lý không?</span><img class="faq__icon" src="images/SpecialStar.svg" alt="" width="59" height="57"></button></h3>
+            <div class="faq__a" id="ans2" role="region" aria-labelledby="q2"><div><p>Không. Dữ liệu được xây dựng phục vụ Khóa luận tốt nghiệp và mục đích nghiên cứu học thuật. Thông tin quy hoạch, ranh giới chỉ mang tính chất tham khảo, chưa qua thẩm định và không có giá trị pháp lý trong các giao dịch thực tế.</p></div></div>
+          </div>
+          <div class="faq__item reveal" data-delay="160">
+            <h3><button class="faq__q" type="button" aria-expanded="false" aria-controls="ans3" id="q3"><span>Làm thế nào để đo khoảng cách trực tuyến?</span><img class="faq__icon" src="images/SpecialStar.svg" alt="" width="59" height="57"></button></h3>
+            <div class="faq__a" id="ans3" role="region" aria-labelledby="q3"><div><p>Bấm nút thước đo ở thanh công cụ bên phải bản đồ, sau đó nhấp lần lượt các điểm cần đo. Tổng chiều dài (m hoặc km) hiển thị ngay; bấm “Xóa nét đo” để đo lại.</p></div></div>
+          </div>
+          <div class="faq__item reveal" data-delay="240">
+            <h3><button class="faq__q" type="button" aria-expanded="false" aria-controls="ans4" id="q4"><span>Hệ thống có dùng được trên điện thoại không?</span><img class="faq__icon" src="images/SpecialStar.svg" alt="" width="59" height="57"></button></h3>
+            <div class="faq__a" id="ans4" role="region" aria-labelledby="q4"><div><p>Có. Giao diện tự co giãn theo điện thoại, máy tính bảng và máy tính; trên màn hình nhỏ, bảng tra cứu chuyển thành cửa sổ trượt ở cạnh dưới màn hình.</p></div></div>
+          </div>
+          <div class="faq__item reveal" data-delay="320">
+            <h3><button class="faq__q" type="button" aria-expanded="false" aria-controls="ans5" id="q5"><span>Dữ liệu được lấy từ nguồn nào?</span><img class="faq__icon" src="images/SpecialStar.svg" alt="" width="59" height="57"></button></h3>
+            <div class="faq__a" id="ans5" role="region" aria-labelledby="q5"><div><p>Dữ liệu địa chính và quy hoạch do Văn phòng đăng ký đất đai cung cấp, được số hóa và chuẩn hóa phục vụ nghiên cứu (17.821 thửa đất, 100 tờ bản đồ, kỳ quy hoạch 2021 – 2030).</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer (thu hẹp chiều rộng) ===== -->
+  <footer class="footer">
+    <div class="footer__bar">
+      <p class="footer__team">Sinh viên thực hiện: Đặng Lê Như Ý · Nguyễn Văn Mạnh</p>
+      <p class="footer__copy">Copyright © 2026 YManh. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <button class="to-top" id="toTop" type="button" aria-label="Về đầu trang" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</body>
+</html>

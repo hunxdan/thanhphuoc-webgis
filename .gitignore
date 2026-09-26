@@ -1,0 +1,11 @@
+# Hệ điều hành / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+.vscode/
+.idea/
+
+# File tạm khi chỉnh sửa font/ảnh
+*.tmp
+*.bak

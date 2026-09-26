@@ -1,0 +1,11 @@
+# Chuẩn hóa line-ending cho file text (tránh lỗi diff giữa Windows/macOS/Linux)
+* text=auto eol=lf
+
+# File nhị phân — không cần chuẩn hóa
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.ico binary
