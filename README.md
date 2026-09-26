@@ -5,8 +5,7 @@ Website tĩnh (HTML/CSS/JS thuần, **không cần build step**) hiển thị b�
 Dự án phục vụ mục đích học tập / khóa luận tốt nghiệp.
 
 > ⚠️ Dữ liệu chỉ mang tính chất tham khảo cho mục đích học thuật, không có
-> giá trị pháp lý. Tên chủ sử dụng đất đã được ẩn danh một phần (xem mục
-> [Dữ liệu & quyền riêng tư](#dữ-liệu--quyền-riêng-tư)).
+> giá trị pháp lý.
 
 ## Tính năng
 
