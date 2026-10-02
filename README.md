@@ -67,8 +67,8 @@ Trình duyệt chặn `fetch` khi mở trực tiếp bằng `file://`, nên cầ
 một máy chủ tĩnh đơn giản:
 
 ```bash
-git clone <đường-dẫn-repo-của-bạn>
-cd webgis-thanh-phuoc
+git clone https://github.com/hunxdan/thanhphuoc-webgis.git
+cd thanhphuoc-webgis
 python3 -m http.server 8080
 # rồi mở http://localhost:8080/index.html
 ```
